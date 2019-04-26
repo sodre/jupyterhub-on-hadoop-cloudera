@@ -1,11 +1,11 @@
-name: parcel-sdk
+name: parcel-dev
 channels:
-  - conda-forge
   - defaults
+  - conda-forge
 dependencies:
   - conda
   - conda-pack
   - yq
   - pygit2
-  - openjdk
+  - openjdk 8.0.152
   - maven
