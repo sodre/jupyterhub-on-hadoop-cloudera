@@ -3,14 +3,14 @@
 
 schema_version: 1
 
-name: JUPYTERHUB-ON-HADOOP
-version: 0.1.0
+name: {{ conda_env.name | upper }}
+version: "{{ version }}-0.0.3"
 setActiveSymlink: false
 
 # Inter-parcel Dependency Information
 depends: CDH
-replaces: 
-conflicts:
+replaces: ""
+conflicts: ""
 
 # What this parcel provides
 #   this parcel can not be deleted while any of the Cloudera managed services
@@ -26,17 +26,21 @@ users:
     longname: JupyterHub on Hadoop
     home: /var/lib/jupyterhub
     shell: /bin/bash
+    extra_groups: []
 
-groups: 
+groups: []
 
-# This is optional
+# This is optional and for informational purposes only
 packages:
-- name: jupyterhub
-  version: 1.5
+{% for pkg in components %}
+- name: {{ pkg.channel }}::{{ pkg.name }}
+  version: "{{ pkg.version }}-{{ pkg.build_string }}"
+{% endfor %}
 
-# This is optional
+# This is optional is used to ensure hosts have the same
+# version of the software installed
 components:
-- name: jupyterhub
-  version: 0.1.0
-  pkg_version: version
-  pkg_release: build_string
+{% for pkg in components %}
+- name: {{ pkg.channel }}::{{ pkg.name }}
+  version: "{{ pkg.version }}-{{ pkg.build_string }}"
+{% endfor %}

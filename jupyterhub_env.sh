@@ -1,6 +1,6 @@
 # We can not use conda-unpack at this point because the process sourcing 
 # this file does not have write access to the parcel directory.
-if $PARCELS_ROOT != "/opt/cloudera/parcels"; then
+if [ "$PARCELS_ROOT" != "/opt/cloudera/parcels" ]; then
   cat <<EOF
 ERROR: Unsuported PARCELS_ROOT directory.
   The JupyterHub parcel can only be installed in Cloudera's default 
