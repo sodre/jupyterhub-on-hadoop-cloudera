@@ -1,0 +1,18 @@
+name: jupyterhub
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.7.2
+  - conda=4.5.12=py37_0
+  - pip=18.1=py37_0
+
+  - jupyterhub
+  - jupyterhub-yarnspawner
+  - jupyterhub-ldapauthenticator
+  - oauthenticator
+  - pip:
+    - jupyterhub-dummyauthenticator 
+    # Requires GCC, this should be turned into a conda package instead
+    # - jupyterhub-kerberosauthenticator
+    - jhub_remote_user_authenticator
