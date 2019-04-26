@@ -8,3 +8,4 @@ dependencies:
   - yq
   - pygit2
   - openjdk
+  - maven
