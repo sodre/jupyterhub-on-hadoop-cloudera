@@ -1,0 +1,7 @@
+name: parcel-sdk
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - conda-pack
+  - yq

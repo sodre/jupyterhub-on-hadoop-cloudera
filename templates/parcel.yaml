@@ -1,0 +1,42 @@
+# For details on each one of the fields please see:
+# https://github.com/cloudera/cm_ext/wiki/The%20parcel.json%20file
+
+schema_version: 1
+
+name: JUPYTERHUB-ON-HADOOP
+version: 0.1.0
+setActiveSymlink: false
+
+# Inter-parcel Dependency Information
+depends: CDH
+replaces: 
+conflicts:
+
+# What this parcel provides
+#   this parcel can not be deleted while any of the Cloudera managed services
+#   are subscribed to what a parcel provides
+provides:
+- jupyterhub
+
+scripts:
+  defines: jupyterhub_env.sh
+
+users:
+  jupyterhub:
+    longname: JupyterHub on Hadoop
+    home: /var/lib/jupyterhub
+    shell: /bin/bash
+
+groups: 
+
+# This is optional
+packages:
+- name: jupyterhub
+  version: 1.5
+
+# This is optional
+components:
+- name: jupyterhub
+  version: 0.1.0
+  pkg_version: version
+  pkg_release: build_string

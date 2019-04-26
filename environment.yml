@@ -1,4 +1,4 @@
-name: jupyterhub
+name: jupyterhub-on-hadoop
 channels:
   - conda-forge
   - defaults
@@ -11,6 +11,7 @@ dependencies:
   - jupyterhub-yarnspawner
   - jupyterhub-ldapauthenticator
   - oauthenticator
+
   - pip:
     - jupyterhub-dummyauthenticator 
     # Requires GCC, this should be turned into a conda package instead
