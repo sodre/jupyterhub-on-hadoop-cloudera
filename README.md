@@ -1,5 +1,7 @@
 # jupyterhub-parcel
 
+JupyterHub in a parcel!
+
 ## Clone the submodules
 ```bash
 git submodule update --init
@@ -16,12 +18,12 @@ conda activate parcel-dev
 cd cm_ext && mvn install -q cm_ext && cd ..
 ```
 
+## Build the parcel
 ```bash
-# Generate the jupyterhub environment
-conda env create .
+ipython main.ipynb
+```
 
-# Generate the parcel-meta file
-conda-env-to-parcel
-
-# Use conda-pack to generate the parcel tar.gz
+## Use python's built-in httpserver to serve the parcels to CM
+```bash
+python -m http.server --directory parcels --port 14156
 ```

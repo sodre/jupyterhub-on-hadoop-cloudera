@@ -9,3 +9,5 @@ dependencies:
   - pygit2
   - openjdk 8.0.152
   - maven
+  - nbformat
+  - jinja2
