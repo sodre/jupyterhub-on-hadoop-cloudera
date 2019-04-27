@@ -1,19 +1,13 @@
-name: jupyterhub
+name: cloudera-dev
 channels:
-  - conda-forge
   - defaults
+  - conda-forge
 dependencies:
-  - python=3.7.2
-  - conda=4.5.12
-  - pip=18.1
-
-  - jupyterhub
-  - jupyterhub-yarnspawner
-  - jupyterhub-ldapauthenticator
-  - oauthenticator
-
-  - pip:
-    - jupyterhub-dummyauthenticator 
-    # Requires GCC, this should be turned into a conda package instead
-    # - jupyterhub-kerberosauthenticator
-    - jhub_remote_user_authenticator
+  - conda
+  - conda-pack
+  - yq
+  - pygit2
+  - openjdk 8.0.152
+  - maven
+  - nbformat
+  - jinja2

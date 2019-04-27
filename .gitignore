@@ -1,4 +1,3 @@
-jupyterhub
-parcels
+parcel/environment
+parcel/parcels
 *.parcel
-.ipynb_checkpoints

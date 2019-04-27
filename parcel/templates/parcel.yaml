@@ -16,10 +16,10 @@ conflicts: ""
 #   this parcel can not be deleted while any of the Cloudera managed services
 #   are subscribed to what a parcel provides
 provides:
-- jupyterhub
+- {{ conda_env.name }}
 
 scripts:
-  defines: jupyterhub_env.sh
+  defines: {{ conda_env.name }}-env.sh
 
 users:
   jupyterhub:
