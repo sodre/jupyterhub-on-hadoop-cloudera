@@ -14,10 +14,9 @@ before_install:
 
 install:
   - |
-    conda activate base
-
-    conda env create -q
-    conda activate cloudera-dev
+    until conda activate cloudera-dev; do
+        conda env create -q
+    done
 
     pushd cm_ext
 
@@ -39,3 +38,7 @@ script:
 
     popd
 
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.conda
