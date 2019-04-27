@@ -8,6 +8,11 @@ addons:
     packages:
       - conda
 
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.conda
+
 before_install:
   - sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d
   - source /etc/profile.d/conda.sh
@@ -38,7 +43,3 @@ script:
 
     popd
 
-cache:
-  directories:
-    - $HOME/.m2
-    - $HOME/.conda
