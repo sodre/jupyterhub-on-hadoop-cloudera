@@ -35,15 +35,27 @@ For instructions on how to use them in your Cloudera Cluster, please refer to th
 ## Buiding a new Parcel
   1. Add/Replace/Update JupyterHub requirements by editing the
      `parcel/environment.yml` conda-environment file.
+  3. Update the version string on `parcel/templates/parcel.yaml`.
   2. Run `build.py`
      ```
-     cd parcels
+     cd parcel
+     ./build.py
+     ```
+  
+  To install these built parcel on Cloudera Manager please follow directions outlined
+  on [Cloudera's documentation][2]. Hint: you can spin up a local HTTP server using 
+  Python 3.x by running `python -m http.server --directory parcels --port 14156`
+  
+  For more details please see the [cm_ext wiki page][3]
+
+## Building the Custom Service Descriptor jar
+
+  1. Run `build.py`
+     ```
+     cd csd
      ./build.py
      ```
 
-## Use python's built-in httpserver to serve the parcels to CM
-```bash
-  python -m http.server --directory parcels --port 14156
-```
-
   [1]: https://jcrist.github.io/jupyterhub-on-hadoop/
+  [2]: https://www.cloudera.com/documentation/enterprise/latest/topics/cm_ig_parcels.html
+  [3]: https://github.com/cloudera/cm_ext/wiki
