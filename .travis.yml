@@ -21,7 +21,7 @@ install:
 
     pushd cm_ext
 
-    mvn -DskipTests install
+    mvn -B -DskipTests -q install
     mkdir -p $CONDA_PREFIX/lib/cloudera
     cp -f validator/target/validator.jar $CONDA_PREFIX/lib/cloudera/
 
