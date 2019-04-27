@@ -16,7 +16,7 @@ install:
     source /etc/profile.d/conda.sh
     conda activate base
 
-    conda env create
+    conda env create -q
     conda activate cloudera-dev
 
     pushd cm_ext
