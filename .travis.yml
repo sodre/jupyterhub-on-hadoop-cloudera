@@ -10,10 +10,10 @@ addons:
 
 before_install:
   - sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d
+  - source /etc/profile.d/conda.sh
 
 install:
   - |
-    source /etc/profile.d/conda.sh
     conda activate base
 
     conda env create -q
@@ -33,6 +33,9 @@ install:
 script:
   - |
     conda activate cloudera-dev
-    pushd parcels
+    pushd parcel
+
     ./build.py
+
+    popd
 
