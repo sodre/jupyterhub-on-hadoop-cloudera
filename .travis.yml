@@ -1,0 +1,44 @@
+language: minimal
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main'
+        key_url: 'https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc'
+    packages:
+      - conda
+
+before_install:
+  - sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d
+  - source /etc/profile.d/conda.sh
+
+install:
+  - |
+    until conda activate cloudera-dev; do
+        conda env create -q
+    done
+
+    pushd cm_ext
+
+    mvn -B -DskipTests -q install
+    mkdir -p $CONDA_PREFIX/lib/cloudera
+    cp -f validator/target/validator.jar $CONDA_PREFIX/lib/cloudera/
+
+    install ../bin/validator.sh $CONDA_PREFIX/bin
+    install make_manifest/make_manifest.py $CONDA_PREFIX/bin
+
+    popd
+
+script:
+  - |
+    conda activate cloudera-dev
+    pushd parcel
+
+    ./build.py
+
+    popd
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.conda
