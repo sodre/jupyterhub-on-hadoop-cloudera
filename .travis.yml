@@ -8,9 +8,12 @@ addons:
     packages:
       - conda
 
+before_install:
+  - sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d
+
 install:
+  - conda env create
   - |
-    conda env create
     conda activate cloudera-dev
     pushd cm_ext
 
