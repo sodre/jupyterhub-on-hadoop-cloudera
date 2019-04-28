@@ -35,25 +35,25 @@ serviceDependencies:
 - name: HDFS
 - name: YARN
 
-hdfsDirs:
-- name: CreateHDFSHomeCommand
-  label: Create JupyterHub's HDFS Directory
-  description: This command creates the home directory for JupyterHub
-  directoryDescription: The home directory for JupyterHub
-  path: "/user/${user}"
-  permissions: "0750"
+#hdfsDirs:
+#- name: CreateHDFSHomeCommand
+#  label: Create JupyterHub's HDFS Directory
+#  description: This command creates the home directory for JupyterHub
+#  directoryDescription: The home directory for JupyterHub
+#  path: "/user/${user}"
+#  permissions: "0750"
 
-- name: CreateHDFSCondaEnvRepoCommand
-  label: Create JupyterHub's Conda Environment Repository
-  description: This command creates a directory to store packaged conda environments.
-  directoryDescription: A directory to store conda environments from conda-pack
-  path: "/user/${user}/conda"
-  permissions: "0755"
+#- name: CreateHDFSCondaEnvRepoCommand
+#  label: Create JupyterHub's Conda Environment Repository
+#  description: This command creates a directory to store packaged conda environments.
+#  directoryDescription: A directory to store conda environments from conda-pack
+#  path: "/user/${user}/conda"
+#  permissions: "0755"
 
-serviceInit:
-  preStartSteps:
-    - commandName: CreateHDFSHomeCommand
-    - commandName: CreateHDFSCondaEnvRepoCommand
+#serviceInit:
+#  preStartSteps:
+#    - commandName: CreateHDFSHomeCommand
+#    - commandName: CreateHDFSCondaEnvRepoCommand
 
 rollingRestart:
   workerSteps:
@@ -96,7 +96,7 @@ roles:
 
   parameters:
   - name: proxy_port
-    configName: port
+    configName: --port
     label: Public-facing port of the proxy
     description: Public-facing port of the proxy
     required: true
@@ -106,7 +106,7 @@ roles:
     configurableInWizard: true
 
   - name: proxy_api_port
-    configName: api-port
+    configName: --api-port
     label: Inward-facing port for API requests
     description: Inward-facing port for API requests
     required: false
@@ -121,3 +121,24 @@ roles:
       includedParams:
       - proxy_port
       - proxy_api_port
+
+- name: JUPYTERHUB_HUB
+  label: The Hub Instance
+  pluralLabel: The Hub Instances
+
+  startRunner:
+    program: scripts/start-hub.sh
+
+  topology:
+    maxInstances: 1
+    minInstances: 1
+
+  parameters:
+
+  configWriter:
+    generators:
+    - filename: hub.gflags
+      configFormat: gflags
+      additionalConfigs:
+        - key: --Proxy.should_start
+          value: false
