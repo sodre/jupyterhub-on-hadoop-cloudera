@@ -144,6 +144,7 @@ roles:
   startRunner:
     environmentVariables:
       CONFIGPROXY_AUTH_TOKEN: ${configproxy_auth_token}
+      JPY_COOKIE_SECRET: ${jpy_cookie_secret}
     program: scripts/start-hub.sh
 
   topology:
@@ -151,13 +152,33 @@ roles:
     minInstances: 1
 
   parameters:
+  - name: jpy_cookie_secret
+    configName: c.JupyterHub.cookie_secret
+    label: JupyterHub Cookie Secret
+    description: The cookie secret to use to encrypt cookies.
+    required: true
+    configurableInWizard: true
+    sensitive: true
+    type: password
+    conformRegex: '^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+    initType: randomBase64
 
   configWriter:
     generators:
     - filename: hub.gflags
       configFormat: gflags
       excludedParams:
-        - configproxy_auth_token
+      - configproxy_auth_token
+      - jpy_cookie_secret
       additionalConfigs:
-        - key: --Proxy.should_start
-          value: "False"
+      - key: --config
+        value: jupyterhub_config.py
+
+    - filename: jupyterhub_config.py
+      configFormat: properties
+      excludedParams:
+      - configproxy_auth_token
+      - jpy_cookie_secret
+      additionalConfigs:
+      - key: c.Proxy.should_start
+        value: "False"
