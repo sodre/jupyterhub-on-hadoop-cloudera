@@ -11,3 +11,4 @@ dependencies:
   - maven
   - nbformat
   - jinja2
+  - imagemagick

@@ -1,0 +1,123 @@
+#
+# Cloudera's Custom Service Descritor file
+#
+# See https://github.com/cloudera/cm_ext/wiki/Service-Descriptor-Language-Reference definition of each item.
+name: JUPYTERHUB
+label: JupyterHub
+description: |
+  JupyterHub, a multi-user Hub, spawns, manages, and proxies
+  multiple instances of the single-user Jupyter notebook server
+version: 0.1.0
+
+compatibility:
+  cdhVersion:
+    max: '5'
+    min: 5.7.0
+
+icon: images/icon.png
+
+inExpressWizard: true
+
+runAs:
+  user: jupyterhub
+  group: jupyterhub
+  principal: jupyterhub
+
+maxInstances: 1
+
+parcel:
+  #repoUrl: https://github.com/nomr/pki-parcel/releases/download/v1.2.0+0.0.5
+  #additionalRepoUrls:
+  requiredTags:
+  - jupyterhub
+
+serviceDependencies:
+- name: HDFS
+- name: YARN
+
+hdfsDirs:
+- name: CreateHDFSHomeCommand
+  label: Create JupyterHub's HDFS Directory
+  description: This command creates the home directory for JupyterHub
+  directoryDescription: The home directory for JupyterHub
+  path: "/user/${user}"
+  permissions: "0750"
+
+- name: CreateHDFSCondaEnvRepoCommand
+  label: Create JupyterHub's Conda Environment Repository
+  description: This command creates a directory to store packaged conda environments.
+  directoryDescription: A directory to store conda environments from conda-pack
+  path: "/user/${user}/conda"
+  permissions: "0755"
+
+serviceInit:
+  preStartSteps:
+    - commandName: CreateHDFSHomeCommand
+    - commandName: CreateHDFSCondaEnvRepoCommand
+
+rollingRestart:
+  workerSteps:
+    roleName: JUPYTERHUB_HUB
+    bringDownCommands:
+      - Stop
+    bringUpCommands:
+      - Start
+
+rolesWithExternalLinks:
+- JUPYTERHUB_PROXY
+
+keberos: true
+
+# The Service Level Commands
+#commands:
+
+# The Service Level Parameters
+parameters:
+
+roles:
+- name: JUPYTERHUB_PROXY
+  label: Configurable Proxy
+  pluralLabel: Configurable Proxies
+
+  externalLink:
+    name: node_http_proxy
+    label: JupyterHub UI
+    url: 'http://${host}:${proxy_port}'
+
+  startRunner:
+    environmentVariables:
+    program: scripts/start-proxy.sh
+
+  commands:
+
+  topology:
+    maxInstances: 1
+    minInstances: 0
+
+  parameters:
+  - name: proxy_port
+    configName: port
+    label: Public-facing port of the proxy
+    description: Public-facing port of the proxy
+    required: true
+    type: port
+    min: 1024
+    default: 8000
+    configurableInWizard: true
+
+  - name: proxy_api_port
+    configName: api-port
+    label: Inward-facing port for API requests
+    description: Inward-facing port for API requests
+    required: false
+    type: port
+    min: 1024
+    default: 8001
+
+  configWriter:
+    generators:
+    - filename: node-http-proxy.gflags
+      configFormat: gflags
+      includedParams:
+      - proxy_port
+      - proxy_api_port
