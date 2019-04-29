@@ -138,8 +138,8 @@ roles:
       - proxy_api_port
 
 - name: JUPYTERHUB_HUB
-  label: The Hub Instance
-  pluralLabel: The Hub Instances
+  label: Hub
+  pluralLabel: Hub
 
   startRunner:
     environmentVariables:
@@ -152,6 +152,17 @@ roles:
     minInstances: 1
 
   parameters:
+  # TODO: Convert db_url into kwargs version, so we can support different schemes, username and passwords
+  - name: jpy_db_url
+    configName: c.JupyterHub.db_url
+    label: URL for the database
+    description: URL for the database, e.g. `sqlite:///jupyterhub.sqlite`
+    required: true
+    configurableInWizard: false
+    sensitive: false
+    type: uri
+    default: sqlite:////var/lib/jupyterhub/jupyterhub.sqlite
+
   - name: jpy_cookie_secret
     configName: c.JupyterHub.cookie_secret
     label: JupyterHub Cookie Secret
@@ -163,10 +174,20 @@ roles:
     conformRegex: '^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
     initType: randomBase64
 
+  - name: jpy_answer_yes
+    configName: --y
+    label: Answer yes to any question
+    description: Answer yes to any question (e.g. confirm overwrite)
+    required: true
+    type: boolean
+    default: False
+
   configWriter:
     generators:
     - filename: hub.gflags
       configFormat: gflags
+      includedParams:
+      - jpy_answer_yes
       excludedParams:
       - configproxy_auth_token
       - jpy_cookie_secret
@@ -179,6 +200,7 @@ roles:
       excludedParams:
       - configproxy_auth_token
       - jpy_cookie_secret
+      - jpy_answer_yes
       additionalConfigs:
       - key: c.Proxy.should_start
         value: "False"

@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+source /etc/profile.d/conda.sh
+conda activate cloudera-dev
+
 set -euf
 
 # Convert the logo to an icon
