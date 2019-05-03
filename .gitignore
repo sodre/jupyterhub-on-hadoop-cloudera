@@ -1,3 +1,4 @@
 parcel/environment
 parcel/parcels
 *.parcel
+/parcel/templates/environment.yml

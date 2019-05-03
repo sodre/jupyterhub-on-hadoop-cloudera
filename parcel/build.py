@@ -12,24 +12,29 @@ from jinja2 import Environment, FileSystemLoader
 
 
 def build_parcel():
+    jinja_env = Environment(loader=FileSystemLoader('templates'))
+
+    (jpy_version, parcel_version) = get_version()
+
     # Create the JupyterHub Environment
+    render_environment_yaml(jinja_env, jpy_version=jpy_version)
     with open('environment.yml') as f:
         conda_env = yaml.load(f, Loader=yaml.Loader)
     check_call('conda env create --force -p {name}'.format(**conda_env).split(' '))
 
-    # Get the complete list of packages installed
+    # Get the complete list of installed packages
     components = json.loads(run_command(Commands.LIST, '--json', '-p', conda_env['name'])[0])
-    parcel_version = [x['version'] for x in components if x['name'] == conda_env['name']][0]
+    jpy_version = [x['version'] for x in components if x['name'] == conda_env['name']][0]
 
     # Create the meta folder under the conda-environment
     meta_dir = os.path.join(conda_env['name'], 'meta')
     os.makedirs(meta_dir, exist_ok=True)
 
     # Create the meta/parcel.json file
-    jinja_env = Environment(loader=FileSystemLoader('templates'))
     parcel_template = jinja_env.get_template('parcel.yaml')
     parcel_rendered = parcel_template.render(conda_env=conda_env,
-                                             version=parcel_version,
+                                             jpy_version=jpy_version,
+                                             parcel_version=parcel_version,
                                              components=components)
     parcel_dict = yaml.load(parcel_rendered, Loader=yaml.Loader)
 
