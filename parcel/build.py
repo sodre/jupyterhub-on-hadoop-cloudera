@@ -9,6 +9,28 @@ import conda_pack
 import ruamel_yaml as yaml
 from conda.cli.python_api import Commands, run_command
 from jinja2 import Environment, FileSystemLoader
+from pygit2 import discover_repository, Repository, GIT_DESCRIBE_TAGS
+
+
+def get_parcel_tag():
+    repo = Repository(discover_repository('.'))
+    return repo.describe(pattern="parcel/*", describe_strategy=GIT_DESCRIBE_TAGS)
+
+
+def get_version():
+    tag = get_parcel_tag()
+    version_joined = tag.split('/')[1]
+    rv = version_joined.split('-')
+    rv[0] = rv[0][1:]
+    return rv[0], rv[1]
+
+
+def render_environment_yaml(jinja_env, **kwargs):
+    template = jinja_env.get_template('environment.yaml')
+    rendered = template.render(**kwargs)
+
+    with open('environment.yml', 'w') as f:
+        f.write(rendered)
 
 
 def build_parcel():
