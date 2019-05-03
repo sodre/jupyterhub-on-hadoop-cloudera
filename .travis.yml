@@ -37,6 +37,7 @@ install:
 script:
   - |
     conda activate cloudera-dev
+    set -euf
     pushd parcel
 
     ./build.py
