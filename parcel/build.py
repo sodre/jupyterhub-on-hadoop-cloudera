@@ -26,7 +26,7 @@ def get_version():
 
 
 def render_environment_yaml(jinja_env, **kwargs):
-    template = jinja_env.get_template('environment.yaml')
+    template = jinja_env.get_template('environment.yml')
     rendered = template.render(**kwargs)
 
     with open('environment.yml', 'w') as f:
