@@ -4,7 +4,7 @@
 schema_version: 1
 
 name: {{ conda_env.name | upper }}
-version: "{{ version }}-0.0.3"
+version: "{{ jpy_version }}-{{  parcel_version }}"
 setActiveSymlink: false
 
 # Inter-parcel Dependency Information

@@ -38,8 +38,7 @@ script:
   - |
     conda activate cloudera-dev
     pushd parcel
-
+    set -e
     ./build.py
-
+    set +e
     popd
-

@@ -4,8 +4,8 @@ if [ "$PARCELS_ROOT" != "/opt/cloudera/parcels" ]; then
   cat <<EOF
 ERROR: Unsuported PARCELS_ROOT directory.
   The JupyterHub parcel can only be installed in Cloudera's default 
-  parcel location (/opt/cloudera/parcels), but your parcels 
-  location is $PARCELS_ROOT. 
+  parcel location (/opt/cloudera/parcels), but your parcel
+  location is $PARCELS_ROOT.
 
   Please go to github.com/sodre/jupyterhub-parcel for instructions 
   on how to regenerate this parcel to match your cluster configuration.

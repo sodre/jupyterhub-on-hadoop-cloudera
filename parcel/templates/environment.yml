@@ -9,7 +9,7 @@ dependencies:
   - conda=4.5.12
   - pip=18.1
 
-  - jupyterhub
+  - jupyterhub {{ jpy_version }}
   - jupyterhub-yarnspawner
   - jupyterhub-ldapauthenticator
   - oauthenticator
