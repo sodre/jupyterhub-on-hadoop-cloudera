@@ -5,6 +5,7 @@ channels:
 dependencies:
   - conda
   - conda-pack
+  - ruby
   - yq
   - pygit2
   - openjdk 8.0.152

@@ -42,4 +42,3 @@ script:
     ./build.py
     set +e
     popd
-
